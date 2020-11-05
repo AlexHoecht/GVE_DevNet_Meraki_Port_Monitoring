@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Port Monitoring Dashboard{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+	<div class="row base-margin-bottom">
+		<!-- Organization and Network Selection Panels (Left Side) -->
+		<div class="col-4">
+			<div class="row base-margin-bottom">
+				<div class="col-12 panel panel--raised" style="background-color: #ced4da; height: 150px; overflow: scroll;">
+					<h4><u>Available Organizations</u></h4>
+					{% for org in available_Orgs %}
+						{% if org['id'] == selectedOrg %}
+						<button class="btn btn--success col-6 base-margin-bottom base-margin-left" name="organization" value="{{ org['id'] }}">{{ org['name'] }}</button>
+						{% else %}
+						<button class="btn btn--danger col-6 base-margin-bottom base-margin-left" name="organization" value="{{ org['id'] }}">{{ org['name'] }}</button>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 panel panel--raised" style="background-color: #ced4da; height: 250px; overflow: scroll;">
+					<h4><u>Available Networks in Organization</u></h4>
+					{% for network in org_Networks %}
+						{% if network['id'] == selectedNetwork %}
+						<button class="btn btn--success col-6 base-margin-bottom base-margin-left" name="network" value="{{ network['id'] }}">{{ network['name'] }}</button>
+						{% else %}
+						<button class="btn btn--danger col-6 base-margin-bottom base-margin-left" name="network" value="{{ network['id'] }}">{{ network['name'] }}</button>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Event Log and Network Switches (Right Side) -->
+		<div class="col-8">
+			<div class="row">
+				<div class="col-11 panel panel--raised dbl-margin-left" style="background-color: #ced4da; height: 415px; overflow:scroll;">
+					<div class="flex flex-between">
+						<h4><u>SwitchPort Status Event Log</u></h4><button name="refreshEvents" class="btn btn--link"><span class="icon-refresh"></span></button>
+					</div>
+					<table class="table table--striped">
+						<tr>
+							<th>Device Name</th>
+							<th>Time</th>
+							<th>Port</th>
+							<th>Old State</th>
+							<th>New State</th>
+						</tr>
+						{% for event in network_Events %}
+						<tr>
+							<td>{{ event['deviceName'] }}</td>
+							<td>{{ event['occurredAt'] }}</td>
+							<td>{{ event['eventData']['port'] }}</td>
+							<td>{{ event['eventData']['old'] }}</td>
+							<td>{{ event['eventData']['new'] }}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12 panel panel--raised" style="background-color: #ced4da; overflow:scroll;">
+			<div class="row base-margin-left">
+				<h3><u>Network Switches</u></h3>
+			</div>
+			<div class="row base-margin-left base-margin-bottom">
+				<input class="base-margin-right" type="search" id="filterNetworkSwitchesName" onkeyup="searchByName()" placeholder="Search Device Name">
+				<input type="search" id="filterNetworkSwitchesModel" onkeyup="searchByName()" placeholder="Search Device Model">
+			</div>
+			<table id="networkSwitchTable" class="table table--striped">
+				<tr>
+					<th>Device Name</th>
+					<th>Device Model</th>
+					<th>Update Device</th>
+					<th>View on Meraki Dashboard</th>
+				</tr>
+				{% for device in network_Devices %}
+				<tr>
+					<td>{{ device['name'] }}</td>
+					<td>{{ device['model'] }}</td>
+					<td><button class="btn btn--small" name="device" value="{{ device['serial'] }}">Here</button></td>
+					<td><a href="{{ device['url'] }}">Link</a></td>
+				</tr>
+				{% endfor %}
+			</table>
+			<script>
+			function searchByName() {
+				var input, filter, table, tr, td, i, txtValue;
+				input = document.getElementById("filterNetworkSwitchesName");
+				filter = input.value.toUpperCase();
+				table = document.getElementById("networkSwitchTable");
+				tr = table.getElementsByTagName("tr");
+				for (i = 0; i < tr.length; i++) {
+					td = tr[i].getElementsByTagName("td")[0];
+					if (td) {
+						txtValue = td.textContent || td.innerText;
+					  	if (txtValue.toUpperCase().indexOf(filter) > -1) {
+							tr[i].style.display = "";
+					  	}
+					  	else {
+							tr[i].style.display = "none";
+					  }
+					}
+				  }
+				}
+			function searchByName() {
+				var input, filter, table, tr, td, i, txtValue;
+				input = document.getElementById("filterNetworkSwitchesModel");
+				filter = input.value.toUpperCase();
+				table = document.getElementById("networkSwitchTable");
+				tr = table.getElementsByTagName("tr");
+				for (i = 0; i < tr.length; i++) {
+					td = tr[i].getElementsByTagName("td")[1];
+					if (td) {
+						txtValue = td.textContent || td.innerText;
+					  	if (txtValue.toUpperCase().indexOf(filter) > -1) {
+							tr[i].style.display = "";
+					  	}
+					  	else {
+							tr[i].style.display = "none";
+					  }
+					}
+				  }
+				}
+        	</script>
+		</div>
+	</div>
+</form>
+{% endblock %}

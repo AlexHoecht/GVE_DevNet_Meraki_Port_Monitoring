@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}<u><b>{{ deviceDetails['name'] }}</b></u>{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <div class="row base-margin-top">
+        <div class="col-11 panel panel--raised dbl-margin-left" style="background-color: #ced4da;">
+            <h4>Platform:<b> {{ deviceDetails['model'] }}</b></h4>
+            <div class="responsive-table">
+                <table class="table table--striped">
+                    <tr>
+                        <th>Port ID</th>
+                        <th>Enabled</th>
+                        <th>Status</th>
+                        <th>clientCount</th>
+                        <th>Speed</th>
+                        <th>Duplex</th>
+                    </tr>
+                    {% for port in device_PortList_Status %}
+                    <tr>
+                        <td>{{ port['portId'] }}</td>
+
+                        {% if port['enabled'] %}
+                        <td><label class="switch"><input type="checkbox" name="port" value="{{ port['portId']}}" checked><span class="switch__input"></span></label></td>
+                        {% else %}
+                        <td><label class="switch"><input type="checkbox" name="port" value="{{ port['portId']}}"><span class="switch__input"></span></label></td>
+                        {% endif %}
+
+                        {% if port['status'] == 'Connected' %}
+                        <td><button class="btn btn--success btn--circle" data-balloon="{{ port['status'] }}" data-balloon-pos="right"></button></td>
+                        {% else %}
+                        <td><button class="btn btn--dark btn--circle" data-balloon="{{ port['status'] }}" data-balloon-pos="right"></button></td>
+                        {% endif %}
+
+                        <td>{{ port['clientCount'] }}</td>
+                        <td>{{ port['speed'] }}</td>
+                        <td>{{ port['duplex'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="flex flex-right base-margin-top">
+                <button class="btn btn--danger" name="update" onclick="showEnablement()">Update Device</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

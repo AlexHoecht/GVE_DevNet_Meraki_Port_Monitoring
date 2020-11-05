@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{% block title %}<u>Meraki Snapshot - Settings</u>{% endblock %}</h1>
+
+  <div class="row dbl-margin-bottom">
+    <div class="col-12">
+      <form method="post">
+        <blockquote class="blockquote--danger">
+          <h4>Stop Automated Monitoring</h4>
+          <label class="base-margin-right">Confirm: <input class="checkbox" type="checkbox" required/></label>
+          <button class="btn btn--danger" name="clearSchedule">Stop</button>
+        </blockquote>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <blockquote class="blockquote--dark">
+        <h3>Current User Info:</h3>
+        <p>Username: {{ username }}</p>
+        <p>Password (Hash): {{ password }}</p>
+        <p>Access Token: {{ accessToken }}</p>
+      </blockquote>
+    </div>
+  </div>
+
+{% endblock %}

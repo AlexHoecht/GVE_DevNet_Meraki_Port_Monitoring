@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <title>MERAKI PORT MONITORING</title>
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/cui-standard.min.css') }}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='js/styleguide.js') }}"></script>
+
+        <script>
+            $( document ).ready(function() {
+                console.log( "document loaded" );
+            });
+
+            $( window ).on( "load", function() {
+                console.log( "window loaded" );
+            });
+        </script>
+    </head>
+
+    <body class="cui">
+
+        <header class="header">
+            <div class="container">
+                <div class="header-panels">
+                    <div class="header-panel">
+                        <a class="header__logo" href="https://meraki.cisco.com/" target="_blank">
+                            <span><img src="{{ url_for('static', filename='img/meraki.jpeg') }}" style="height:40px; width:150px;"></span>
+                        </a>
+                        <div class="header__title">Custom Port Monitoring Prototype</div>
+                    </div>
+                    {% if g.user %}
+                    <div class="header-panel header-panel--right">
+                        <div class="header-item">
+                            <ul id="tabsheader" class="tabs">
+                                <li id="tabsheader-1" class="tab">
+                                    {% if session['selectedNetwork'] %}
+                                    <a tabindex="0" href="{{ url_for('dashboard.dashboardComplete') }}">
+                                    {% elif session['selectedOrg'] %}
+                                    <a tabindex="0" href="{{ url_for('dashboard.dashboardWithNetworks') }}">
+                                    {% else %}
+                                    <a tabindex="0" href="{{ url_for('dashboard.dashboard') }}">
+                                    {% endif %}
+                                        <div class="tab__heading"><span class="icon-android-home"> Home</span></div>
+                                    </a>
+                                </li>
+                                <li id="tabsheader-2" class="tab">
+                                    <a tabindex="0" href="{{ url_for('dashboard.automation') }}">
+                                        <div class="tab__heading"><span class="icon-running-application"> Automation</span></div>
+                                    </a>
+                                </li>
+                                <li id="tabsheader-3" class="tab">
+                                    <a tabindex="0" href="{{ url_for('dashboard.settings') }}">
+                                        <div class="tab__heading"><span class="icon-cog"> Settings</span></div>
+                                    </a>
+                                </li>
+                                <li id="tabsheader-4" class="tab">
+                                    <a tabindex="0" href="{{ url_for('auth.logout') }}">
+                                        <div class="tab__heading"><span class="icon-remove-contain"> Log Out</span></div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+           </div>
+        </header>
+
+        <div class="row base-margin-top">
+            <div class="panel panel--well col-12 dbl-margin-top base-margin-left">
+                <section class="content">
+                    <header>{% block header %}{% endblock %}</header>
+                    {% for message in get_flashed_messages() %}
+                    <div class="flash">{{ message }}</div>
+                    {% endfor %}
+                    <div class="panel">{% block content %}{% endblock %}</div>
+
+                    <footer class="footer footer--dark col-12">
+                        <div class="footer__links">
+                            <ul class="list list--inline">
+                                <li><a href="http://www.cisco.com/cisco/web/siteassets/contacts/index.html" target="_blank">Contacts</a></li>
+                                <li><a href="https://secure.opinionlab.com/ccc01/o.asp?id=jBjOhqOJ" target="_blank">Feedback</a></li>
+                                <li><a href="https://www.cisco.com/c/en/us/about/help.html" target="_blank">Help</a></li>
+                                <li><a href="http://www.cisco.com/c/en/us/about/sitemap.html" target="_blank">Site Map</a></li>
+                                <li><a href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank">Terms & Conditions</a></li>
+                                <li><a href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank">Privacy Statement</a></li>
+                                <li><a href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html#cookies" target="_blank">Cookie Policy</a></li>
+                                <li><a href="https://www.cisco.com/c/en/us/about/legal/trademarks.html" target="_blank">Trademarks</a></li>
+                            </ul>
+                        </div>
+                    </footer>
+                </section>
+
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}<u><b>Automated Port Monitoring</b></u>{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <div class="row base-margin-top">
+        <div class="col-11 panel panel--raised dbl-margin-left" style="background-color: #ced4da;">
+			<h4>Configure Automated Monitoring</h4>
+			<p>(Schedule: Runs on testing schedule for now!)</p>
+			<div class="flex flex-between base-margin-top">
+				<div class="form-group">
+					{% for org in available_Orgs %}
+					<label class="checkbox">
+						<input name="organization" value="{{ org['id'] }}" type="checkbox">
+						<span class="checkbox__input"></span>
+						<span class="checkbox__label">{{ org['name'] }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+			<button class="btn btn--danger" name="schedule">Schedule</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

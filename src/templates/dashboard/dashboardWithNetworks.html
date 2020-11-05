@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}Port Monitoring Dashboard{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <div class="row base-margin-bottom">
+        <div class="col-4 panel panel--raised" style="background-color: #ced4da">
+            <h4><u>Available Organizations</u></h4>
+			{% for org in available_Orgs %}
+				{% if org['id'] == selectedOrg %}
+				<button class="btn btn--success col-6 base-margin-bottom base-margin-left" name="organization" value="{{ org['id'] }}">{{ org['name'] }}</button>
+				{% else %}
+				<button class="btn btn--danger col-6 base-margin-bottom base-margin-left" name="organization" value="{{ org['id'] }}">{{ org['name'] }}</button>
+				{% endif %}
+			{% endfor %}
+        </div>
+    </div>
+
+    <div class="row base-margin-bottom">
+        <div class="col-4 panel panel--raised" style="background-color: #ced4da">
+            <h4><u>Available Networks in Organization</u></h4>
+            {% for network in org_Networks %}
+			<button class="btn btn--danger col-6 base-margin-bottom base-margin-left" name="network" value="{{ network['id'] }}">{{ network['name'] }}</button>
+			{% endfor %}
+        </div>
+    </div>
+</form>
+{% endblock %}
